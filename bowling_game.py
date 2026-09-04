@@ -8,7 +8,6 @@ class BowlingGame:
         # Initialize a new game with 10 frames
         # Each frame has up to 2 rolls (except the 10th frame which can have 3)
         self.frames = [[]]
-        self.current_roll = 1
 
     def roll(self, pins: int):
         
@@ -27,9 +26,7 @@ class BowlingGame:
         if current_frame_order < 10:
             if pins == 10 or len(current_frame) >= 2:
                 self.frames.append([])
-            
-        self.current_roll += 1
-    
+                
     def _is_valid_roll(self, pins: int) -> bool:
         
         if pins < 0 or pins > 10:
