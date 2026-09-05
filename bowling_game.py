@@ -87,13 +87,19 @@ class BowlingGame:
     def _strike_bonus(self, frame_index: int):
        
         next_frame = self.frames[frame_index + 1]
+        if not next_frame:
+            return 0
         if len(next_frame) >= 2:
             return sum(next_frame[:2])
-        return next_frame[0] + self.frames[frame_index + 2][0]
+        try:
+            return next_frame[0] + self.frames[frame_index + 2][0]
+        except IndexError:
+            return next_frame[0]
 
     def _spare_bonus(self, frame_index: int):
        
-        return self.frames[frame_index + 1][0]
+        next_frame = self.frames[frame_index + 1]
+        return next_frame[frame_index + 1][0] if next_frame else 0
 
 
 class GameEndedError(Exception):
