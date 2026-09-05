@@ -1,7 +1,7 @@
 import unittest
 from bowling_game import BowlingGame, GameEndedError, InvalidPinsError, InvalidPinsTotalInFrameError
 
-class TestExampleUsage(unittest.TestCase):
+class TestBowlingGame(unittest.TestCase):
     """Test suite for bowling_game module."""
 
     def tearDown(self):
@@ -47,6 +47,40 @@ class TestExampleUsage(unittest.TestCase):
         game.roll(8)
         with self.assertRaises(InvalidPinsTotalInFrameError):
             game.roll(7)
+            
+    def test_strike_with_full_next_frame(self):
+        game = BowlingGame()
+        game.roll(10)
+        game.roll(6)
+        game.roll(2)
+        self.assertEqual(game.score(), 26)
+    
+    def test_strike_with_partial_next_frame(self):
+        game = BowlingGame()
+        game.roll(10)
+        game.roll(6)
+        self.assertEqual(game.score(), 22)
+        
+    def test_strike_without_next_frame(self):
+        game = BowlingGame()
+        game.roll(10)
+        self.assertEqual(game.score(), 10)
+    
+    def test_unfinished_game_with_spare(self):
+        game = BowlingGame()
+        game.roll(7)
+        game.roll(3)
+        game.roll(4)
+        game.roll(2)
+        self.assertEqual(game.score(), 20)
+        
+    def test_unfinished_regular_game(self):
+        game = BowlingGame()
+        game.roll(6)
+        game.roll(3)
+        game.roll(4)
+        game.roll(2)
+        self.assertEqual(game.score(), 15)
 
 if __name__ == "__main__":
     unittest.main()
