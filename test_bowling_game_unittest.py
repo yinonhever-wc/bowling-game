@@ -31,7 +31,7 @@ class TestExampleUsage(unittest.TestCase):
         with self.assertRaises(InvalidPinsTotalInFrameError):
             game.roll(4)
             
-    def test_invalid_total_in_last_frame(self):
+    def test_invalid_total_in_last_frame_with_strike(self):
         game = BowlingGame()
         for _ in range(18):
             game.roll(3)
@@ -39,6 +39,14 @@ class TestExampleUsage(unittest.TestCase):
         game.roll(7)
         with self.assertRaises(InvalidPinsTotalInFrameError):
             game.roll(4)
+            
+    def test_invalid_total_in_last_frame_without_strike(self):
+        game = BowlingGame()
+        for _ in range(18):
+            game.roll(3)
+        game.roll(8)
+        with self.assertRaises(InvalidPinsTotalInFrameError):
+            game.roll(7)
 
 if __name__ == "__main__":
     unittest.main()

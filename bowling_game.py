@@ -7,7 +7,7 @@ class BowlingGame:
     def __init__(self):
         # Initialize a new game with 10 frames
         # Each frame has up to 2 rolls (except the 10th frame which can have 3)
-        self.frames = [[]]
+        self.frames: list[list[int]] = [[]]
 
     def roll(self, pins: int):
         
@@ -44,6 +44,10 @@ class BowlingGame:
                 pass  # spare: roll 3 is fresh, no check needed
             elif len(current_frame) == 1 and current_frame[0] == 10:
                 pass  # roll 1 roll was a strike: roll 2 is fresh
+            elif len(current_frame) == 2 and current_frame[0] == 10:
+                # roll 1 was a strike, roll 2 wasn't: roll 3 only needs to fit with roll 2
+                if current_frame[1] + pins > 10:
+                    return False, InvalidPinsTotalInFrameError()
             elif sum(current_frame) + pins > 10:
                 return False, InvalidPinsTotalInFrameError()
         
