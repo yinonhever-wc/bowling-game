@@ -15,11 +15,11 @@ class BowlingGame:
 
         if current_frame_order >= 10:
             if len(current_frame) > 2 or (len(current_frame) == 2 and sum(current_frame) < 10):
-                raise Exception("Can't roll any more, game has ended.")
+                raise GameEndedError()
         
-        if not self._is_valid_roll(pins):
-            raise Exception("""Invalid roll - pins must be between 0-10, and total pins in a frame can't be more than 10, 
-                            unless an extra roll was gained in the last frame.""")
+        is_roll_valid, roll_error = self._check_roll_validity(pins)
+        if not is_roll_valid:
+            raise roll_error or Exception("Invalid roll")
             
         current_frame.append(pins)
         
@@ -27,16 +27,16 @@ class BowlingGame:
             if pins == 10 or len(current_frame) >= 2:
                 self.frames.append([])
                 
-    def _is_valid_roll(self, pins: int) -> bool:
+    def _check_roll_validity(self, pins: int) -> tuple[bool, Exception | None]:
         
         if pins < 0 or pins > 10:
-            return False
+            return False, InvalidPinsError()
         
         current_frame, current_frame_order = self._get_current_frame()
         
         if current_frame_order < 10:
             if sum(current_frame) + pins > 10:
-                return False
+                return False, InvalidPinsTotalInFrameError()
         else:
             if len(current_frame) == 2 and current_frame[0] == 10 and current_frame[1] == 10:
                 pass  # two strikes: roll 3 is fully fresh, no check needed
@@ -45,14 +45,14 @@ class BowlingGame:
             elif len(current_frame) == 1 and current_frame[0] == 10:
                 pass  # roll 1 roll was a strike: roll 2 is fresh
             elif sum(current_frame) + pins > 10:
-                return False
+                return False, InvalidPinsTotalInFrameError()
         
-        return True
+        return True, None
     
     def _get_current_frame(self):
         current_frame = self.frames[-1]
         current_frame_order = len(self.frames)
-        return (current_frame, current_frame_order)
+        return current_frame, current_frame_order
 
     def score(self):
         
@@ -90,3 +90,22 @@ class BowlingGame:
     def _spare_bonus(self, frame_index: int):
        
         return self.frames[frame_index + 1][0]
+
+
+class GameEndedError(Exception):
+    def __init__(self, message="Can't roll any more, game has ended."):
+        self.message = message
+        super().__init__(self.message)
+
+
+class InvalidPinsError(Exception):
+    def __init__(self, message="Invalid roll - pins must be between 0 and 10."):
+        self.message = message
+        super().__init__(self.message)
+
+
+class InvalidPinsTotalInFrameError(Exception):
+    def __init__(self, message="""Invalid roll - total pins in a frame can't be more than 10, 
+                 unless an extra roll was gained in the last frame."""):
+        self.message = message
+        super().__init__(self.message)
