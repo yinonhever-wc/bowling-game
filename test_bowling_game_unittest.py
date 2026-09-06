@@ -15,7 +15,7 @@ class TestBowlingGame(unittest.TestCase):
     def test_game_ended(self):
         """Testing an invalid scenario of attempting to roll again after all 10 frames have been played put and the game 
         has already ended. 
-        In this case the number 3 is rolled 20 times, which ends the game, and then and the number 3 is rolled again, which 
+        In this case the number 3 is rolled 20 times, which ends the game, and then the number 3 is rolled again, which 
         should result in a GameEndedError being raised."""
         game = BowlingGame()
         for _ in range(20):
