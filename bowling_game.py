@@ -59,7 +59,7 @@ class BowlingGame:
         frame, in which case the roll is marked as invalid with an InvalidPinsTotalInFrameError.
         If the current frame is a regular one (one of the first 9 frames), the code simply checks whether the frame's total 
         pins would be higher than 10 after this roll.
-        If the current frame is the 10th one (where an extra roll is given in case all 10 rolls are knocked), the code allows
+        If the current frame is the 10th one (where an extra roll is given in case all 10 pins are knocked), the code allows
         a total higher than 10 in certain scenarios and combinations, depending on whether a strike or a spare has been 
         achieved on the frame, and on which roll. 
         """
@@ -93,8 +93,8 @@ class BowlingGame:
     
     def _get_current_frame(self) -> tuple[list[int], int]:
         """
-        This method returns a tuple containing the current frame that's being played (represented by a list of integers),
-        and number representing the order of that frame in the game (1 to 10).
+        This method returns a tuple containing the current frame that's being played (represented by a list of integers)
+        and a number representing the order of that frame in the game (1 to 10).
         """
         current_frame = self.frames[-1]
         current_frame_order = len(self.frames)
