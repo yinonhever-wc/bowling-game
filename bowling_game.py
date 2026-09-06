@@ -91,16 +91,16 @@ class BowlingGame:
         
         return True, None
     
-    def _get_current_frame(self):
+    def _get_current_frame(self) -> tuple[list[int], int]:
         """
-        This method returns a tuple containing the current frame (a list of integers) that's currently being played,
+        This method returns a tuple containing the current frame that's being played (represented by a list of integers),
         and number representing the order of that frame in the game (1 to 10).
         """
         current_frame = self.frames[-1]
         current_frame_order = len(self.frames)
         return current_frame, current_frame_order
 
-    def score(self):
+    def score(self) -> int:
         """
         This method calculates and returns the total score for all the frames that have been played in the game.
         It loops through each frame, adds the sum of its rolls to the total score, and adds the appropriate bonus
@@ -119,14 +119,14 @@ class BowlingGame:
 
         return score
 
-    def _is_strike(self, frame_index: int):
+    def _is_strike(self, frame_index: int) -> bool:
         """
         This method receives a frame's index as a parameter and returns a boolean indicating whether a strike was
         achieved in that frame (whether it contains a roll of 10) and it's not the 10th frame.
         """
         return frame_index + 1 < len(self.frames) and 10 in self.frames[frame_index]
 
-    def _is_spare(self, frame_index: int):
+    def _is_spare(self, frame_index: int) -> bool:
         """
         This method receives a frame's index as a parameter and returns a boolean indicating whether a spare was
         achieved in that frame (whether its rolls have a total of 10 pins but without a single roll of 10) and it's
@@ -135,7 +135,7 @@ class BowlingGame:
         frame = self.frames[frame_index]
         return frame_index + 1 < len(self.frames) and sum(frame) == 10 and 10 not in frame
 
-    def _strike_bonus(self, frame_index: int):
+    def _strike_bonus(self, frame_index: int) -> int:
         """
         This receives a frame's index as a parameter and returns the bonus that frame should receive for a strike.
         The bonus is calculated as the total pins of the next two rolls after that frame, if two subsequent rolls have 
@@ -152,7 +152,7 @@ class BowlingGame:
         except IndexError:
             return next_frame[0]
 
-    def _spare_bonus(self, frame_index: int):
+    def _spare_bonus(self, frame_index: int) -> int:
         """
         This receives a frame's index as a parameter and returns the bonus that frame should receive for a spare.
         The bonus is the number of pins in the roll played after that frame, or 0 if no subsequent roll has been played yet.

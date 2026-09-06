@@ -4,7 +4,7 @@ from bowling_game import BowlingGame, GameEndedError, InvalidPinsError, InvalidP
 class TestBowlingGame(unittest.TestCase):
     """
     Test suite for bowling_game module.
-    This suit tests edge cases and invalid game scenarios that should result in an error,
+    This suite tests edge cases and invalid game scenarios that should result in an error,
     as well as scenarios of partial or unfinished valid games.
     """
 
