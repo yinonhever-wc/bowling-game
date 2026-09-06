@@ -72,22 +72,22 @@ class BowlingGame:
         if pins < 0 or pins > 10:
             return False, InvalidPinsError()
                 
-        if current_frame_order < 10:
-            if sum(current_frame) + pins > 10:
+        if sum(current_frame) + pins > 10:
+            if current_frame_order < 10:
                 return False, InvalidPinsTotalInFrameError()
-        else:
-            if len(current_frame) == 2 and current_frame[0] == 10 and current_frame[1] == 10:
-                pass  # two strikes: roll 3 is fully fresh, no check needed
-            elif len(current_frame) == 2 and sum(current_frame) == 10:
-                pass  # spare: roll 3 is fresh, no check needed
-            elif len(current_frame) == 1 and current_frame[0] == 10:
-                pass  # roll 1 roll was a strike: roll 2 is fresh
-            elif len(current_frame) == 2 and current_frame[0] == 10:
-                # roll 1 was a strike, roll 2 wasn't: roll 3 only needs to fit with roll 2
-                if current_frame[1] + pins > 10:
+            else:
+                if len(current_frame) == 2 and current_frame[0] == 10 and current_frame[1] == 10:
+                    pass  # two strikes: roll 3 is fully fresh, no check needed
+                elif len(current_frame) == 2 and sum(current_frame) == 10:
+                    pass  # spare: roll 3 is fresh, no check needed
+                elif len(current_frame) == 1 and current_frame[0] == 10:
+                    pass  # roll 1 roll was a strike: roll 2 is fresh
+                elif len(current_frame) == 2 and current_frame[0] == 10:
+                    # roll 1 was a strike, roll 2 wasn't: roll 3 only needs to fit with roll 2
+                    if current_frame[1] + pins > 10:
+                        return False, InvalidPinsTotalInFrameError()
+                else:
                     return False, InvalidPinsTotalInFrameError()
-            elif sum(current_frame) + pins > 10:
-                return False, InvalidPinsTotalInFrameError()
         
         return True, None
     
@@ -108,10 +108,9 @@ class BowlingGame:
         """
         score = 0
 
-        for frame_index in range(len(self.frames)):
-            frame = self.frames[frame_index]
+        for frame_index, frame in enumerate(self.frames):
             score += sum(frame)
-            
+
             if self._is_strike(frame_index):
                 score += self._strike_bonus(frame_index)
             elif self._is_spare(frame_index):
